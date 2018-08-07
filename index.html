@@ -83,12 +83,13 @@ d3.csv("leden.csv", function(error, data) {
   
   // Add the Y Axis
   svg.append("g")
-      .call(d3.axisRight(y));
+      .attr("class", "axis")
+      .call(d3.axisLeft(y));
 
   	// add the yB Axis
-  svg.append("g")
-      .attr("class", "axis")  
-      .call(d3.axisLeft(yb));  
+  //svg.append("g")
+      //.attr("class", "axis")  
+      //.call(d3.axisLeft(yb));  
  
    
 });
