@@ -7,6 +7,9 @@
   stroke: steelblue;
   stroke-width: 2px;
 }
+.bar {
+  fill: steelblue;
+}
 
 </style>
 <body>
@@ -66,7 +69,7 @@ d3.csv("leden.csv", function(error, data) {
   svg.append("rect")
       .attr("class", "bar")
       .attr("x", function(d) { return x(d.maand); })
-      .attr("width", xb.bandwidth())
+      .attr("width", x.bandwidth())
       .attr("y", function(d) { return yb(d.leden); })
       .attr("height", function(d) { return height - yb(d.leden); });
   
