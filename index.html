@@ -29,7 +29,7 @@ var parseTime = d3.timeParse("%b-%y");
 // set the ranges
 var x = d3.scaleTime().range([0, width]);
 var y = d3.scaleLinear().range([height, 0]);
-//var yb = d3.scaleLinear().range([height, 0]);
+var yb = d3.scaleLinear().range([height, 0]);
 
 // define the line
 var valueline = d3.line()
@@ -54,13 +54,13 @@ d3.csv("leden.csv", function(error, data) {
   data.forEach(function(d) {
       d.maand = parseTime(d.maand);
       d.meetlat = +d.meetlat;
-      //d.leden = +d.leden;
+      d.leden = +d.leden;
   });
 
   // Scale the range of the data
   x.domain(d3.extent(data, function(d) { return d.maand; }));
   y.domain([0, d3.max(data, function(d) { return d.meetlat; })]);
-  //yb.domain([0, d3.max(data, function(d) { return d.leden; })]);
+  yb.domain([0, d3.max(data, function(d) { return d.leden; })]);
 
   // Add the valueline path.
   svg.append("path")
@@ -68,7 +68,9 @@ d3.csv("leden.csv", function(error, data) {
       .attr("class", "line")
       .attr("d", valueline);
 
-  /*svg.append("rect")
+  svg.selectAll(".bar")
+      .data(data)
+    .enter().append("rect")
       .attr("class", "bar")
       .attr("x", function(d) { return x(d.maand); })
       .attr("width", x.bandwidth())
@@ -87,9 +89,9 @@ d3.csv("leden.csv", function(error, data) {
       .call(d3.axisLeft(y));
 
   	// add the yB Axis
-  //svg.append("g")
-      //.attr("class", "axis")  
-      //.call(d3.axisLeft(yb));  
+  svg.append("g")
+      .attr("class", "axis")  
+      .call(d3.axisLeft(yb));  
   
 });
 
