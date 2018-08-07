@@ -22,7 +22,7 @@
 <!-- load the d3.js library -->    	
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
-console.clear()
+
 // set the dimensions and margins of the graph
 var margin = {top: 20, right: 50, bottom: 30, left: 50},
     width = 960 - margin.left - margin.right,
@@ -62,8 +62,7 @@ d3.csv("leden.csv", function(error, data) {
       d.meetlat = +d.meetlat;
       d.leden = +d.leden;
   });
-  console.table(data);
-  
+
   // Scale the range of the data
   xBar.domain(data.map(function(d) { return d.maand; }));
   xLine.domain(data.map(function(d) { return d.maand; })]);
