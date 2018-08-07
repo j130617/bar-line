@@ -54,6 +54,7 @@ d3.csv("leden.csv", function(error, data) {
   data.forEach(function(d) {
       d.maand = parseTime(d.maand);
       d.meetlat = +d.meetlat;
+      d.leden = +d.leden;
   });
 
   // Scale the range of the data
