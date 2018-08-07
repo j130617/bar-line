@@ -20,7 +20,9 @@ var margin = {top: 20, right: 20, bottom: 30, left: 50},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
-
+// parse the date / time
+var parseTime = d3.timeParse("%b-%y");
+  
 // set the ranges
 var x = d3.scaleOrdinal().range([0, width]);
 var y = d3.scaleLinear().range([height, 0]);
@@ -46,6 +48,7 @@ d3.csv("leden.csv", function(error, data) {
 
   // format the data
   data.forEach(function(d) {
+      d.maand = parseTime(d.maand);
       d.meetlat = +d.meetlat;
   });
 
