@@ -27,10 +27,11 @@ var margin = {top: 20, right: 50, bottom: 30, left: 50},
 var parseTime = d3.timeParse("%b-%y");
   
 // set the ranges
-var x = d3.scaleTime().range([0, width]);
-var y = d3.scaleLinear().range([height, 0]);
-var yb = d3.scaleLinear().range([height, 0]);
-
+var xBar = d3.scaleBand().range([0, width]).paddingInner(0.5).paddingOuter(0.25);
+var xLine = d3.scalePoint().range([0, width]).padding(0.5);
+var yBar = d3.scaleLinear().range([height, 0]);
+var yLine = d3.scaleLinear().range([height, 0]);
+  
 // define the line
 var valueline = d3.line()
     .x(function(d) { return x(d.maand); })
@@ -56,11 +57,13 @@ d3.csv("leden.csv", function(error, data) {
       d.meetlat = +d.meetlat;
       d.leden = +d.leden;
   });
-
+  console.table(data);
+  
   // Scale the range of the data
-  x.domain(d3.extent(data, function(d) { return d.maand; }));
-  y.domain([0, d3.max(data, function(d) { return d.meetlat; })]);
-  yb.domain([0, d3.max(data, function(d) { return d.leden; })]);
+  xBar.domain(data.map(function(d) { return d.maand; }));
+  xLine.domain(data.map(function(d) { return d.maand; })]);
+  yBar.domain([0, d3.max(data, function(d) { return d.leden; })]);
+  yLine.domain([0, d3.max(data, function(d) { return d.meetlat; })]);
 
   // Add the valueline path.
   svg.append("path")
@@ -72,27 +75,27 @@ d3.csv("leden.csv", function(error, data) {
       .data(data)
     .enter().append("rect")
       .attr("class", "bar")
-      .attr("x", function(d) { return x(d.maand); })
+      .attr("x", function(d) { return xBar(d.maand); })
       .attr("width", x.bandwidth())
-      .attr("y", function(d) { return yb(d.leden); })
+      .attr("y", function(d) { return yBar(d.leden); })
       .attr("height", function(d) { return height - yb(d.leden); }); */
   
   // Add the X Axis
   svg.append("g")
-      .attr("class", "axis")
       .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x));
-  
-  // Add the Y Axis
-  svg.append("g")
-      .attr("class", "axis")
-      .call(d3.axisLeft(y));
+      .call(d3.axisBottom(xLine));
 
-  	// add the yB Axis
+  // Add the Y0 Axis
   svg.append("g")
-      .attr("class", "axis")  
-      .call(d3.axisLeft(yb));  
-  
+      .attr("class", "axisSteelBlue")
+      .call(d3.axisLeft(yBar));
+
+  // Add the Y1 Axis
+  svg.append("g")
+      .attr("class", "axisRed")
+      .attr("transform", "translate( " + width + ", 0 )")
+      .call(d3.axisRight(yLine));
+ 
 });
 
 </script>
